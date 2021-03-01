@@ -1,4 +1,5 @@
 import {ApplicationConfig, MymeetBackendApplication} from './application';
+const dotenv = require('dotenv').config();
 
 export * from './application';
 
