@@ -1,3 +1,8 @@
+import {AuthenticationComponent} from '@loopback/authentication';
+import {
+  JWTAuthenticationComponent,
+  UserServiceBindings
+} from '@loopback/authentication-jwt';
 import {BootMixin} from '@loopback/boot';
 import {ApplicationConfig} from '@loopback/core';
 import {RepositoryMixin} from '@loopback/repository';
@@ -9,6 +14,7 @@ import {
 import {ServiceMixin} from '@loopback/service-proxy';
 import path from 'path';
 import {MySequence} from './sequence';
+import {UserService} from './services';
 
 export {ApplicationConfig};
 
@@ -23,6 +29,14 @@ export class MymeetBackendApplication extends BootMixin(
 
     // Set up default home page
     this.static('/', path.join(__dirname, '../public'));
+
+    // - enable jwt auth -
+    // Mount authentication system
+    this.component(AuthenticationComponent);
+    // Mount jwt component
+    this.component(JWTAuthenticationComponent);
+    //Custom User Service
+    this.bind(UserServiceBindings.USER_SERVICE).toClass(UserService);
 
     // Customize @loopback/rest-explorer configuration here
     this.configure(RestExplorerBindings.COMPONENT).to({
