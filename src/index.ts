@@ -6,8 +6,8 @@ export * from './application';
 export async function main(options: ApplicationConfig = {}) {
   const app = new MymeetBackendApplication(options);
   await app.boot();
+  console.log("Boot Complete");
   await app.start();
-
   const url = app.restServer.url;
   console.log(`Server is running at ${url}`);
   console.log(`Try ${url}/ping`);
@@ -16,13 +16,14 @@ export async function main(options: ApplicationConfig = {}) {
 }
 
 if (require.main === module) {
+  const port = (process.env.PORT ?? 3000)
   // Run the application
   const config = {
     rest: {
-      port: +(process.env.PORT ?? 3000),
+      port,
       host: process.env.HOST,
       cors: {
-        origin: [`${process.env.CORS_ORIGIN ?? '*'}`],
+        origin: `${process.env.CORS_ORIGIN}`?.split(" ") ?? '*',
         methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
         preflightContinue: false,
         optionsSuccessStatus: 204,
@@ -39,6 +40,13 @@ if (require.main === module) {
         // useful when used with OpenAPI-to-GraphQL to locate your application
         setServersFromRequest: true,
       },
+    },
+    websocket: {
+      port,
+      cors: {
+        origins: `${process.env.CORS_ORIGIN}`,
+        methods: ["GET", "POST"]
+      }
     },
   };
   main(config).catch(err => {

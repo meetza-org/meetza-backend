@@ -6,7 +6,6 @@ import {
 import {BootMixin} from '@loopback/boot';
 import {ApplicationConfig} from '@loopback/core';
 import {RepositoryMixin} from '@loopback/repository';
-import {RestApplication} from '@loopback/rest';
 import {
   RestExplorerBindings,
   RestExplorerComponent
@@ -15,15 +14,18 @@ import {ServiceMixin} from '@loopback/service-proxy';
 import path from 'path';
 import {MySequence} from './sequence';
 import {UserService} from './services';
+import {WebsocketApplication} from "./websockets/websocket.application";
+import {WebsocketControllerBooter} from "./websockets/websocket.booter";
 
 export {ApplicationConfig};
 
 export class MymeetBackendApplication extends BootMixin(
-  ServiceMixin(RepositoryMixin(RestApplication)),
+  ServiceMixin(RepositoryMixin(WebsocketApplication)),
 ) {
   constructor(options: ApplicationConfig = {}) {
     super(options);
-
+    console.log("Inside MymeetBackendApplication");
+    console.log(this);
     // Set up the custom sequence
     this.sequence(MySequence);
 
@@ -43,6 +45,9 @@ export class MymeetBackendApplication extends BootMixin(
       path: '/explorer',
     });
     this.component(RestExplorerComponent);
+
+    //Implementing Socket IO
+    this.booters(WebsocketControllerBooter);
 
     this.projectRoot = __dirname;
     // Customize @loopback/boot Booter Conventions here

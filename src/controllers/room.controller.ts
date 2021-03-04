@@ -1,26 +1,20 @@
-import {authenticate, TokenService} from '@loopback/authentication';
+import {TokenService} from '@loopback/authentication';
 import {
-  MyUserService,
-  TokenServiceBindings,
-  UserServiceBindings
+  TokenServiceBindings
 } from '@loopback/authentication-jwt';
 import {inject} from '@loopback/core';
-import {get} from '@loopback/rest';
+import {Response, RestBindings} from '@loopback/rest';
 import {SecurityBindings, UserProfile} from '@loopback/security';
+import {Socket} from 'socket.io';
 
 export class RoomController {
+  socket: Socket;
   constructor(
-    @inject(TokenServiceBindings.TOKEN_SERVICE)
-    public jwtService: TokenService,
-    @inject(UserServiceBindings.USER_SERVICE)
-    public userService: MyUserService,
-    @inject(SecurityBindings.USER, {optional: true})
-    public user: UserProfile,
+    @inject(TokenServiceBindings.TOKEN_SERVICE) public jwtService: TokenService,
+    @inject(SecurityBindings.USER, {optional: true}) public user: UserProfile,
+    @inject(RestBindings.Http.RESPONSE) private response: Response,
   ) { }
 
-  @authenticate('jwt')
-  @get('/hello')
-  hello(): string {
-    return 'Hello world!';
-  }
+
+
 }

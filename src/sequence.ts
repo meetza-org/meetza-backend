@@ -51,6 +51,7 @@ export class MySequence implements SequenceHandler {
     } catch (error) {
       // - enable jwt auth -
       // improve the error check
+      console.log(error);
       if (
         error.code === AUTHENTICATION_STRATEGY_NOT_FOUND ||
         error.code === USER_PROFILE_NOT_FOUND
