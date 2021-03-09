@@ -58,7 +58,7 @@ export class RoomControllerWs {
           console.log("Joining Room");
           socket.join(data.roomId);
           console.log(data.emailId + " has joined " + data.roomId);
-          socket.to(data.roomId).emit("joined-room", {
+          socket.to(data.roomId).emit("establish-connections", {
             type: "joined-room",
             roomId: data.roomId,
             emailId: data.emailId,
