@@ -48,11 +48,22 @@ export class UserService implements UService<User, Credentials>{
   }
 
   convertToUserProfile(user: User): UserProfile {
+    console.log(user);
     return {
       [securityId]: user.id,
       firstName: user.firstName,
-      id: user.id,
+      id: user.email,
       email: user.email,
     };
+  }
+
+  async findUserById(id: any): Promise<User> {
+    const {client, query} = this.DB;
+    const user = await client.query(query.Get(query.Ref(query.Collection('users'), id)));
+    return new User({
+      id: user.ref,
+      firstName: user.data.firstName,
+      email: user.data.email,
+    })
   }
 }

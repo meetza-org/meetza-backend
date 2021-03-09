@@ -65,6 +65,7 @@ export class UserController {
       // convert a User object into a UserProfile object (reduced set of properties)
       const userProfile = this.userService.convertToUserProfile(user);
       // create a JSON Web Token based on the user profile
+      console.log(userProfile);
       const token = await this.jwtService.generateToken(userProfile);
 
       result = {
