@@ -72,8 +72,8 @@ export class RoomControllerWs {
           break;
         }
         case "video-answer": {
-          console.log(data.emailId + " has sent a video answer");
-          socket.to(data.roomId).emit("establish-connections", data);
+          console.log(data.emailId + " has sent a video answer to: " + data.targetEmailId);
+          socket.to(data.targetEmailId).emit("establish-connections", data);
           break;
         }
         case "started-meeting": {
