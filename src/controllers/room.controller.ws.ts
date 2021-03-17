@@ -68,12 +68,12 @@ export class RoomControllerWs {
         }
         case "video-offer": {
           console.log(data.emailId + " has sent a video offer");
-          socket.to(data.roomId).emit("establish-connections", data);
+          socket.to(data.to).emit("establish-connections", data);
           break;
         }
         case "video-answer": {
           console.log(data.emailId + " has sent a video answer to: " + data.targetEmailId);
-          socket.to(data.targetEmailId).emit("establish-connections", data);
+          socket.to(data.to).emit("establish-connections", data);
           break;
         }
         case "started-meeting": {
@@ -99,7 +99,7 @@ export class RoomControllerWs {
         }
         case "new-ice-candidate": {
           console.log("New ICE Candidate Case");
-          socket.to(data.roomId).emit("establish-connections", data);
+          socket.to(data.to).emit("establish-connections", data);
           break;
         }
         case "close-meeting": {
